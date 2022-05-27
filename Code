@@ -519,3 +519,256 @@ public class TestDemo2 {
         System.out.println(feb(5));
     }
 }
+
+
+
+public class Array {
+
+    public static void IrrTwoArray() {
+        // C语言可以指定列，行可以自己推导
+        // Java 行必须指定，列也不可以自动推导
+        int[][] arr = new int[2][];
+        arr[0] = new int[]{1, 2, 3};
+        arr[1] = new int[]{5,4};
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                System.out.print(arr[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println(Arrays.deepToString(arr));
+    }
+
+    public static void twoArray() {
+        int[][] arr1 = {{1,2,3},{4,5,6}};
+        int[][] arr2 = new int[][]{{1,2,3},{4,5,6}};
+        int[][] arr3 = new int[2][3];
+        System.out.println(Arrays.toString(arr1)); // [[I@1b6d3586, [I@4554617c]
+        System.out.println(Arrays.deepToString(arr1)); // [[1, 2, 3], [4, 5, 6]]
+
+        for (int i = 0; i < arr1.length; i++) {
+            for (int j = 0; j < arr1[i].length; j++) {
+                System.out.print(arr1[i][j] + " ");
+            }
+            System.out.println();
+        }
+        // foreach 打印
+        for (int[] ints : arr1) {
+            for (int anInt : ints) {
+                System.out.print(anInt + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void adjust() {
+        int[] arr = {1, 2, 3, 4, 5 ,6};
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right) {
+            while (left < right && arr[left] % 2 == 0) {
+                // 找到偶数
+                left++;
+            }
+            while (left < right && arr[right] % 2 != 0) {
+                // 找到奇数
+                right--;
+            }
+            if (left < right) {
+                int tmp = arr[left];
+                arr[left] = arr[right];
+                arr[right] = tmp;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    public static void servers() {
+        int[] arr = {1, 2, 3, 4, 5, 6};
+        int left = 0;
+        int right = arr.length - 1;
+        while (left < right) {
+            int tmp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = tmp;
+            left++;
+            right--;
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    public static void bubbleSort() {
+        int[] arr = {5,4,9,8,4,2,3,6,0,5,7};
+        for (int i = 0; i < arr.length - 1; i++) {
+            int flg = 1;
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if(arr[j] > arr[j+1]) {
+                    flg = -flg;
+                    int tmp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = tmp;
+                }
+            }
+            if (flg == 1) {
+                break;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    public static boolean isUp() {
+        int[] arr = {1, 2, 3, 4, 5, 6};
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] > arr[i+1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void sort() {
+        int[] arr = {45, 58, 69, 3, 2, 45, 8, 89, 1};
+        Arrays.sort(arr);//几种排序相结合的
+        System.out.println(Arrays.toString(arr));
+    }
+
+    public static int binarySearch(int[] arr, int key) {
+        int left = 0;
+        int right = arr.length - 1;
+        while (left <= right) {
+            int mid = (left + right) >>> 1;//无符号右移一位
+            if (key < arr[mid]) {
+                right = mid - 1;
+            } else if (key > arr[mid]) {
+                left = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+        return -1;//找不到返回-1
+    }
+
+    public static void maxValue() {
+        int[] arr = {12, 2, 445, 88, 6, 9};
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        System.out.println(max);
+    }
+
+    public static void printArray(int[] arr) {
+        for (int x : arr) {
+            System.out.print(x + " ");
+        }
+    }
+
+    public static void swap(int[] arr) {
+        int tmp = arr[0];
+        arr[0] = arr[1];
+        arr[1] = tmp;
+    }
+
+    public static int[] func(int[] arr) {
+        int[] tmp = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            tmp[i] = arr[i] * 2;
+        }
+        return tmp;//数组可以作为方法的返回值
+    }
+
+    public static void myToString(int[] array) {
+        System.out.print("[");
+        for (int i = 0; i < array.length - 1; i++) {
+            System.out.print(array[i] + ", ");
+        }
+        System.out.print(array[array.length - 1]);
+        System.out.print("]");
+    }
+
+    /**
+     * 数组拷贝（都是浅拷贝）：四种方式：
+     * for 循环
+     * Arrays.copyOf()
+     * System.arraycopy()  速度快
+     * clone() 产生了这个对象的一个副本，  这个方法是Object的克隆方法
+     * Object：所有类的父类
+     *
+     * @param arr
+     */
+    public static int[] copyArray(int[] arr) {
+//        int[] ret = arr.clone();
+//        System.out.println(Arrays.toString(ret));
+
+//        int[] arr1 = new int[arr.length];
+//        System.arraycopy(arr, 0, arr1, 0,arr.length);
+
+        return Arrays.copyOf(arr, arr.length);
+
+/*        int[] arr1 = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            arr1[i] = arr[i];
+        }
+        return arr1;*/
+    }
+
+    public static void main(String[] args) {
+        IrrTwoArray();
+        twoArray();
+        adjust();
+        servers();
+        bubbleSort();
+        sort();
+
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        System.out.println(binarySearch(arr, 5));
+        System.out.println(Arrays.binarySearch(arr, 5));//直接调用
+
+        maxValue();
+
+        int[] array5 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        myToString(array5);
+        System.out.println(Arrays.toString(copyArray(array5)));
+
+        System.out.println();
+
+        int[] array4 = {4, 5, 6, 7, 8, 9};
+        System.out.println(Arrays.toString(func(array4)));
+
+        int[] array3 = null;//空引用（初始化数组 类似 int a = 0；）
+
+        int[] array2 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        System.out.println(Arrays.toString(array2));//调用Arrays.toString()方法将数组以字符串形式输出
+
+        int[] array1 = {10, 20};
+        System.out.println(array1[0] + " " + array1[1]);
+        swap(array1);//交换两个数的值
+        System.out.println(array1[0] + " " + array1[1]);
+
+        int[] array = {1, 2, 3, 4};
+        printArray(array);
+
+        System.out.println();
+        System.out.println("-------------");
+
+        int len = array.length;//属性 （调用对象属性）
+        System.out.println(len);
+        // 遍历数组
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i] + " ");
+        }
+        System.out.println();
+        for (int val : array) {
+            System.out.print(val + " ");
+        }
+    }
+
+    public static void main1(String[] args) {
+        int[] array1 = {1, 2, 3, 4};
+        int[] array2 = new int[]{4, 5, 6};
+        int[] array3 = new int[4];//数组存放 0
+        System.out.println(array1);//[I@1b6d3586 经过处理的地址
+    }
+}
