@@ -1,0 +1,109 @@
+public class SeqList {
+    public int[] elem;//数组
+    public int usedSize;//记录有效数据
+    public static final int intCapacity = 10;//初始容量
+
+    // 初始化
+    public SeqList() {
+        this.elem = new int[intCapacity];
+        this.usedSize = 0;
+    }
+    // 打印顺序表
+    public void display() {
+        //System.out.println(Arrays.toString(this.elem));
+        for (int i = 0; i < this.usedSize; i++) {
+            System.out.print(this.elem[i] + " ");
+        }
+    }
+    private boolean isFull() {
+        return this.usedSize == this.elem.length;
+    }
+    // 在 pos 位置新增元素
+    public void add(int pos, int data) {
+        //满了扩容
+        if (isFull()) {
+            this.elem = Arrays.copyOf(this.elem, this.elem.length*2);
+        }
+        if (pos < 0 || pos > this.usedSize) {
+            //System.out.println("新增位置不合法！");
+            return;
+        } else {
+            for (int i = this.usedSize-1; i >= pos; i--) {
+                this.elem[i + 1] = this.elem[i];
+            }
+            this.elem[pos] = data;
+            this.usedSize++;
+        }
+    }
+    // 判定是否包含某个元素
+    public boolean contains(int toFind) {
+        for (int j : this.elem) {
+            if (j == toFind) {
+                return true;
+            }
+        }
+        return true;
+    }
+    // 查找某个元素对应的位置下标
+    public int search(int toFind) {
+        for (int i = 0; i < this.elem.length; i++) {
+            if (this.elem[i] == toFind) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    // 获取 pos 位置的元素
+    public int getPos(int pos) {
+        if (isFull()) {
+            throw new RuntimeException("顺序表为空！");//手动抛出异常
+        }
+        if (pos < 0 || pos > this.usedSize-1) {
+            return -1;
+        }
+        return this.elem[pos];
+    }
+    // 给 pos 位置的元素设为 value
+    public void setPos(int pos, int value) {
+        if (pos < 0 || pos > this.usedSize-1) {
+            return;
+        }
+            this.elem[pos] = value;
+    }
+    //删除第一次出现的关键字key
+    public void remove(int toRemove) {
+        int index = this.search(toRemove);
+        if (index == -1) {
+            System.out.println("没有你要找的数据！");
+            return;
+        }
+        for (int i = index; i < this.usedSize-1; i++) {
+            this.elem[i] = this.elem[i+1];
+        }
+        this.usedSize--;
+    }
+    // 获取顺序表长度
+    public int size() { return this.usedSize; }
+    // 清空顺序表
+    public void clear() { this.usedSize = 0;  }
+
+
+    public static void main(String[] args) {
+        SeqList seqList = new SeqList();
+        for (int i = 0; i < 15; i++) {
+            seqList.add(i,i);
+        }
+        seqList.display();
+        System.out.println(seqList.contains(5));
+        System.out.println(seqList.search(20));
+        System.out.println(seqList.getPos(4));
+        System.out.println(seqList.size());
+        seqList.remove(0);
+        seqList.display();
+        seqList.clear();
+        seqList.display();
+    }
+}
+
+
+
