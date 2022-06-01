@@ -1,0 +1,257 @@
+//删除链表中等于给定值 val 的所有节点。
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) {
+            return null;
+        }
+        ListNode prev = head;
+        ListNode cur = head.next;
+        while (cur != null) {
+            if (cur.val == val) {
+                prev.next = cur.next;
+                cur = cur.next;
+            } else {
+                prev = cur;
+                cur = cur.next;
+            }
+        }
+        if (head.val == val) {
+            head = head.next;
+        }
+        return head;
+    }
+}
+
+//反转一个单链表
+//方法一  三指针法
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode prev = null;
+        ListNode cur = head;
+        ListNode nextNode = null;
+        ListNode newHead = null;
+        while (cur != null) {
+            nextNode = cur.next;
+            if (nextNode == null) {
+                newHead = cur;
+            }
+            cur.next = prev;
+            prev = cur;
+            cur = nextNode;
+        }
+        return newHead;
+    }
+}
+//方法二 头插法
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode reverseHead = null;
+        ListNode cur = head;
+        ListNode nextNode = null;
+        while (cur != null) {
+            nextNode = cur.next;
+            cur.next = reverseHead;
+            reverseHead = cur;
+            cur = nextNode;
+        }
+        return reverseHead;
+    }
+}
+
+//给定一个带有头结点 head 的非空单链表，返回链表的中间结点。
+//如果有两个中间结点，则返回第二个中间结点
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+
+//输入一个链表，输出该链表中倒数第k个结点
+public class Solution {
+    public ListNode FindKthToTail(ListNode head,int k) {
+        if (k < 0) {
+            return null;
+        }
+        if (head == null) {
+            return null;
+        }
+        ListNode prev = head;
+        ListNode tail = head;
+        for (int i = 0; i < k; i++) {
+            if (tail != null) {
+                tail = tail.next;
+            } else {
+                return null;
+            }
+        }
+        while (tail != null) {
+            prev = prev.next;
+            tail = tail.next;
+        }
+        return prev;
+    }
+}
+
+//编写代码，以给定值x为基准将链表分割成两部分，
+//所有小于x的结点排在大于或等于x的结点之前
+public class Partition {
+    public ListNode partition(ListNode pHead, int x) {
+        ListNode beforeStart = null;
+        ListNode beforeEnd = null;
+        ListNode afterStart = null;
+        ListNode afterEnd = null;
+        ListNode cur = pHead;
+        while (cur != null) {
+            if (cur.val < x) {
+                //before第一次插入
+                if (beforeStart == null) {
+                    beforeStart = cur;
+                    beforeEnd = cur;
+                } else {
+                    beforeEnd.next = cur;
+                    beforeEnd = beforeEnd.next;
+                }
+            } else {
+                //after第一次插入
+                if (afterStart == null) {
+                    afterStart = cur;
+                    afterEnd = cur;
+                } else {
+                    afterEnd.next = cur;
+                    afterEnd = afterStart.next;
+                }
+            }
+            cur = cur.next;
+        }
+        //1.判断beforeStart是否为空  如果beforeStart == null 返回afterStart
+        if (beforeStart == null) {
+            return afterStart;
+        }
+        //2.如果beforeStar不为空  需要进行拼接
+        beforeStart.next = afterStart;
+        //3.如果afterEnd不为空  afterEnd的next需要置为空
+        if (afterEnd != null) {
+            afterEnd.next = null;
+        }
+        return beforeStart;
+    }
+}
+
+ //在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，
+ //重复的结点不保留，返回链表头指针。
+ public class Solution {
+    public ListNode deleteDuplication(ListNode pHead) {
+        if (pHead == null) {
+            return null;
+        }
+        ListNode newHead = new ListNode(-1);
+        ListNode tmp = newHead;
+        ListNode cur = pHead;
+        while (cur != null) {
+            if (cur.next != null && cur.val == cur.next.val) {
+                while (cur.next != null && cur.val == cur.next.val) {
+                    cur = cur.next;
+                }
+                cur = cur.next;
+            } else {
+                tmp.next = cur;
+                tmp = tmp.next;
+                cur = cur.next;
+            }
+        }
+		//最后一个节点的next置为null
+        tmp.next = null;
+        return newHead.next;
+    }
+}
+
+
+//将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
+        ListNode newHead = new ListNode(-1);
+        ListNode head = newHead;;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                head.next = list1;
+                head = list1;
+                list1 = list1.next;
+            } else {
+                head.next = list2;
+                head = list2;
+                list2 = list2.next;
+            }
+        }
+        if (list1 != null) {
+            head.next = list1;
+        }
+        if (list2 != null) {
+            head.next = list2;
+        }
+        return newHead.next;
+    }
+}
+
+
+
+//判断是否是回文结构
+public class PalindromeList {
+    public boolean chkPalindrome(ListNode A) {
+        if (A == null) {
+            return false;
+        }
+        if (A.next == null) {
+            return true;
+        }
+        //1.找中间节点
+        ListNode slow = A;
+        ListNode fast = A;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        //2.翻转中间节点后面的节点
+        ListNode cur = slow.next;
+        ListNode curNext = null;
+        while(cur != null) {
+            curNext = cur.next;
+            cur.next = slow;
+            slow = cur;
+            cur = curNext;
+        }
+        //3.一个从头走，一个从尾走
+        while (slow != A) {
+            if (A.val != slow.val) {
+                return false;
+            }
+            //处理偶数的情况
+            if (A.next == slow) {
+                return true;
+            }
+            slow = slow.next;
+            A = A.next;
+        }
+        return true;
+    }
+}
