@@ -306,3 +306,37 @@ public class Solution {
 }
 
 
+//给定一个已排序的链表的头 head ， 删除所有重复的元素，使每个元素只出现一次 。返回 已排序的链表 。
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode cur = head;
+        ListNode curNext = cur.next;
+        while (cur.next != null) {
+            if (cur.val == curNext.val) {
+                curNext = curNext.next;
+                cur.next = curNext;
+            } else {
+                cur = curNext;
+                curNext = curNext.next;
+            }
+        }
+        return head;
+    }
+}
+
+
+
+//请编写一个函数，用于 删除单链表中某个特定节点 。在设计函数时需要注意，
+//你无法访问链表的头节点 head ，只能直接访问 要被删除的节点 。
+//题目数据保证需要删除的节点 不是末尾节点 。
+class Solution {
+    public void deleteNode(ListNode node) {
+        //将下一个结点的值赋值给要删除的节点
+        node.val = node.next.val;
+        //删除下一个节点
+        node.next = node.next.next;
+    }
+}
