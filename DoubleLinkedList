@@ -1,0 +1,154 @@
+class Node2 {
+    public int data;//数据
+    public Node2 prev;//前驱信息
+    public Node2 next;//后驱信息
+
+    public Node2(int data) {
+        this.data = data;
+    }
+}
+
+public class DoubleLinkedList {
+    public Node2 head;//保存双链表的头节点
+    public Node2 tail;//保存双链表的尾节点
+
+    //头插法
+    public void addFirst(int data){
+        Node2 node = new Node2(data);
+        if (this.head == null) {
+            this.head = node;
+            this.tail = node;
+            return;
+        }
+        node.next = this.head;
+        this.head.prev = node;
+        this.head = node;
+    }
+    //尾插法
+    public void addLast(int data){
+        Node2 node = new Node2(data);
+        if (this.head == null) {
+            this.head = node;
+            this.tail = node;
+            return;
+        }
+        this.tail.next = node;
+        node.prev = this.tail;
+        this.tail = node;
+    }
+    //任意位置插入,第一个数据节点为0号下标
+    public void addIndex(int index,int data){
+        Node2 node = new Node2(data);
+        if (index < 0 || index > size()) {
+            throw new RuntimeException("index位置不合法！");
+        }
+        if (index == 0) {
+            addFirst(data);
+            return;
+        }
+        if (index == size()) {
+            addLast(data);
+            return;
+        }
+        Node2 cur = this.head;
+        while (index != 0) {
+            cur = cur.next;
+            index--;
+        }
+        cur.prev.next = node;
+        node.prev = cur.prev;
+        node.next = cur;
+        cur.prev = node;
+    }
+    //查找是否包含关键字key是否在单链表当中
+    public boolean contains(int key){
+        Node2 cur = this.head;
+        while (cur != null) {
+            if (cur.data == key) {
+                return true;
+            }
+            cur = cur.next;
+        }
+        return false;
+    }
+    //删除第一次出现关键字为key的节点
+    public void remove(int key){
+        if (this.head == null) {
+            return;
+        }
+        Node2 cur = this.head;
+        while (cur != null) {
+            if (cur.data == key) {
+                //删除第一个
+                if (cur == this.head) {
+                    this.head = this.head.next;
+                    this.head.prev = null;
+                } else {
+                    cur.prev.next = cur.next;
+                    //删除的是尾巴节点的情况
+                    if (cur.next != null) {
+                        cur.next.prev = cur.prev;
+                    } else {
+                        this.tail = cur.prev;
+                    }
+                }
+            }
+            cur = cur.next;
+        }
+    }
+    //删除所有值为key的节点
+    public void removeAllKey(int key){
+        if (this.head == null) {
+            return;
+        }
+        Node2 cur = this.head;
+        while (cur != null) {
+            if (cur.data == key) {
+                //删除第一个
+                if (cur == this.head) {
+                    this.head = this.head.next;
+                    if (this.head != null) {
+                        this.head.prev = null;
+                    }
+                } else {
+                    cur.prev.next = cur.next;
+                    //删除的是尾巴节点的情况
+                    if (cur.next != null) {
+                        cur.next.prev = cur.prev;
+                    } else {
+                        this.tail = cur.prev;
+                    }
+                }
+            }
+            cur = cur.next;
+        }
+    }
+
+    //得到单链表的长度
+    public int size(){
+        Node2 cur = this.head;
+        int count = 0;
+        while (cur != null) {
+            count++;
+            cur = cur.next;
+        }
+        return count;
+    }
+    public void display(){
+        Node2 cur = this.head;
+        while (cur != null) {
+            System.out.print(cur.data + " ");
+            cur = cur.next;
+        }
+        System.out.println();
+    }
+    public void clear(){
+        while (this.head != null) {
+            Node2 cur = this.head.next;
+            this.head.prev = null;
+            this.head.next = null;
+            this.head = cur;
+        }
+        this.tail = null;
+    }
+}
