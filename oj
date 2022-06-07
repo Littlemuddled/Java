@@ -340,3 +340,279 @@ class Solution {
         node.next = node.next.next;
     }
 }
+
+
+
+//输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）
+class Solution {
+    public int[] reversePrint(ListNode head) {
+
+        int len = 0;
+        ListNode cur = head;
+        while (cur != null) {
+            len++;
+            cur = cur.next;
+        }
+        int [] array = new int[len];
+        while (head != null) {
+            array[len -1] = head.val;
+            len--;
+            head = head.next;
+        }
+        return array;
+    }
+}
+
+
+
+//给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
+//返回删除后的链表的头节点。
+class Solution {
+    public ListNode deleteNode(ListNode head, int val) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode prev = head;
+        ListNode cur = prev.next;
+        while (cur != null) {
+            if (cur.val == val) {
+                prev.next = cur.next;
+                cur = cur.next;
+            } else {
+                prev = cur;
+                cur = prev.next;
+            }
+        }
+        if (head.val == val) {
+            head = head.next;
+        }
+        return head;
+    }
+}
+
+
+//输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，
+//本题从1开始计数，即链表的尾节点是倒数第1个节点。
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        ListNode cur = head;
+        int count = 0;
+        while (cur != null) {
+            count++;
+            cur = cur.next;
+        }
+        int m = count -k;
+        while (m != 0) {
+            head = head.next;
+            m--;
+        }
+        return head;
+    }
+}
+//方法二 ：双指针法
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        for (int i = 0; i < k; i++) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
+    } 
+}
+
+
+//定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        if (head.next == null) {
+            return head;
+        }
+        ListNode prev = null;
+        ListNode cur = head;
+        ListNode curNext = null;
+        ListNode newHead = null;
+        while (cur != null) {
+            curNext = cur.next;
+            if (cur.next == null) {
+                newHead = cur;
+            }
+            cur.next = prev;
+            prev = cur;
+            cur = curNext;
+        }
+        return newHead;
+    }
+}
+
+
+
+//输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            return l2;
+        }
+        if (l2 == null) {
+            return l1;
+        }
+        ListNode newHead = new ListNode(-1);
+        ListNode head = newHead;;
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                head.next = l1;
+                head = l1;
+                l1 = l1.next;
+            } else {
+                head.next = l2;
+                head = l2;
+                l2 = l2.next;
+            }
+        }
+        if (l1 != null) {
+            head.next = l1;
+        }
+        if (l2 != null) {
+            head.next = l2;
+        }
+        return newHead.next;
+    }
+}
+
+
+//输入两个链表，找出它们的第一个公共节点。
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+                if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode pA = headA, pB = headB;
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
+        }
+        return pA;
+    }
+}
+//方法er
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode pa = headA;
+        ListNode pb = headB;
+        int lenA = 0;
+        int lenB = 0;
+        while (pa != null) {
+            lenA++;
+            pa = pa.next;
+        }
+        while (pb != null) {
+            lenB++;
+            pb = pb.next;
+        }
+        if (lenA > lenB) {
+            while (lenA - lenB != 0) {
+                headA = headA.next;
+                lenA--;
+            }
+            while (headA != null && headB != null) {
+                if (headA == headB) {
+                    return headA;
+                }
+                headA = headA.next;
+                headB = headB.next;
+            }
+            return null;
+        } else {
+            while (lenB - lenA != 0) {
+                headB = headB.next;
+                lenB--;
+            }
+            while (headA != null && headB != null) {
+                if (headA == headB) {
+                    return headA;
+                }
+                headA = headA.next;
+                headB = headB.next;
+            }
+            return null;
+        }
+    }
+}
+
+
+//实现 strStr() 函数。
+//给你两个字符串 haystack 和 needle ，请你在 haystack 字符串中找出 needle 字符串出现的第一个位置（下标从 0 开始）。
+//如果不存在，则返回  -1 
+class Solution {
+    public int strStr(String haystack, String needle) {
+       int m = haystack.length();
+       int n = needle.length();
+       for (int i = 0; i+n <= m; i++) {
+           int j = 0;
+           for (j = 0; j < n; j++) {
+               if (haystack.charAt(i+j) != needle.charAt(j)) {
+                   break;
+               }
+           }
+           if (n == j) {
+               return i;
+           }
+       } 
+       return -1;
+    }
+}
+
+class Solution {
+    public int strStr(String haystack, String needle) {
+       int m = haystack.length();
+       int n = needle.length();
+       for (int i = 0; i+n <= m; i++) {
+		   boolean flag = true;
+           for (int j = 0; j < n; j++) {
+               if (haystack.charAt(i+j) != needle.charAt(j)) {
+				   flag = false;
+                   break;
+               }
+           }
+           if (flag) {
+               return i;
+           }
+       } 
+       return -1;
+    }
+}
+
+
+//输入一个字符串 求字符串包含的字符集合  如：  输入：abcqweracb  输出：abcqwera
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String str = scanner.nextLine();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            String tmp = sb.toString();
+            if (!tmp.contains(ch + "")) { //ch + "" 将char型转变为String型
+                sb.append(ch);
+            }
+        }
+        System.out.println(sb);
+    }
+}
