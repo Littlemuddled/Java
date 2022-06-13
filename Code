@@ -1155,3 +1155,249 @@ public class CustomerView {
         view.enterMain();
     }
 }
+
+
+
+
+public class MyExc {
+
+    //模拟一个trim方法，去除字符串两端的空格
+    public String myTrim(String str) {
+        if (str == null) {
+            return null;
+        }
+        int start = 0;//记录首次下标不是空格的位置
+        int end = str.length() - 1;//记录字符串后面第一个不是空格的位置
+        while (start <  end && str.charAt(start) == ' ') {
+            start++;
+        }
+        while (start <  end && str.charAt(end) == ' ') {
+            end--;
+        }
+        if (str.charAt(start) == ' ') { //控制可能出现的字符串内容全为空格
+            return "";
+        }
+        return str.substring(start, end + 1);
+    }
+
+    //将一个字符串进行反转。将字符串中指定部分进行反转。比如将“abcdefg”反转为”abfedcg”
+    public String reverse1(String str, int startIndex, int endIndex) {
+        if (str == null) {
+            return null;
+        }
+        char[] arr = str.toCharArray();//字符串转为char类型数组
+        while (startIndex < endIndex) {
+            char tmp = arr[startIndex];
+            arr[startIndex] = arr[endIndex];
+            arr[endIndex] = tmp;
+            startIndex++;
+            endIndex--;
+        }
+        return new String(arr);//数组转字符串
+    }
+    public String reverse2(String str, int startIndex, int endIndex) {
+        if (str == null) {
+            return null;
+        }
+        StringBuilder reverseStr = new StringBuilder(str.substring(0, startIndex));
+        for (int i = endIndex; i >= startIndex; i--) {
+            reverseStr.append(str.charAt(i));
+        }
+        reverseStr.append(str.substring(endIndex + 1));
+        return reverseStr.toString();
+    }
+
+    //3.获取一个字符串在另一个字符串中出现的次数。
+    //      比如：获取“ab”在 “cdabkkcadkabkebfkabkskab”
+    //      中出现的次数
+    public int getCount(String mainStr, String subStr) {
+        int mainLength = mainStr.length();
+        int subLength = subStr.length();
+        int count = 0;
+        int index = 0;
+        if (mainLength >= subLength) {
+            while ((index = mainStr.indexOf(subStr, index)) != -1) {
+                count++;
+                index += subLength;
+            }
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
+    //4.获取两个字符串中最大相同子串。比如：
+    //   str1 = "abcwerthelloyuiodef“;str2 = "cvhellobnm"//10
+    //   提示：将短的那个串进行长度依次递减的子串与较长
+    //   的串比较。
+    // 只针对存在一个长度相同的最大子串
+    public String getMaxSameString(String str1, String str2) {
+        if (str1 != null && str2 != null) {
+            String maxStr = (str1.length() >= str2.length()) ? str1 : str2;
+            String minStr = (str1.length() < str2.length()) ? str1 : str2;
+            int length = minStr.length();
+            for (int i = 0; i < length; i++) {
+                for (int x = 0, y = length - i; y < length; x++,y++) {
+                    String subStr = minStr.substring(x,y);
+                    if (maxStr.contains(subStr)) {
+                        return subStr;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    // 如果存在多个长度相同的最大相同子串
+    // 此时先返回String[]，后面可以用集合中的ArrayList替换，较方便
+    public String[] getMaxSameSubString1(String str1, String str2) {
+        if (str1 != null && str2 != null) {
+            StringBuffer sBuffer = new StringBuffer();
+            String maxString = (str1.length() > str2.length()) ? str1 : str2;
+            String minString = (str1.length() > str2.length()) ? str2 : str1;
+
+            int len = minString.length();
+            for (int i = 0; i < len; i++) {
+                for (int x = 0, y = len - i; y <= len; x++, y++) {
+                    String subString = minString.substring(x, y);
+                    if (maxString.contains(subString)) {
+                        sBuffer.append(subString).append(",");
+                    }
+                }
+                System.out.println(sBuffer);
+                if (sBuffer.length() != 0) {
+                    break;
+                }
+            }
+            String[] split = sBuffer.toString().replaceAll(",$", "").split("\\,");
+            return split;
+        }
+
+        return null;
+    }
+
+
+/*    @Test
+    public void myTrim() {
+        String str = "   hello word   ";
+        String str1 = "         ";
+        System.out.println(myTrim(str));
+        System.out.println(myTrim(str1));
+    }
+    @Test
+    public void testReverse() {
+        String str = "abcdefg";
+        System.out.println(reverse1(str, 3, 5));
+        System.out.println(reverse2(str, 3, 5));
+    }*/
+/*    @Test
+    public void testGetCount() {
+        String mainStr = "abbaabbbbababaab";
+        String subStr = "ab";
+        System.out.println(getCount(mainStr, subStr));
+    }*/
+
+    @Test
+    public void testGetMaxSameString() {
+        String str1 = "abcwerthelloyuiodef";
+        String str2 = "cvhellobnm";
+//        System.out.println(getMaxSameString(str1, str2));
+        System.out.println(Arrays.toString(getMaxSameSubString1(str1, str2)));
+    }
+}
+
+
+public class CreateThread1 {
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        t1.start();
+
+        MyThread t2 = new MyThread();
+        t2.start();
+    }
+}
+
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 100; i++) {
+            if (i % 2 == 0) {
+                System.out.println(i);
+            }
+        }
+    }
+}
+
+public class CreateThread2 {
+    public static void main(String[] args) {
+        MThread t = new MThread();
+
+        Thread t1 = new Thread(t);
+        Thread t2 = new Thread(t);
+
+        t1.start();
+        t2.start();
+    }
+}
+
+class MThread implements Runnable{
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 100; i++) {
+            if (i % 2 == 0) {
+                System.out.println(i);
+            }
+        }
+    }
+}
+
+public class SingletonTest1 {
+    public static void main(String[] args) {
+        Bank bank1 = Bank.getInstance();
+        Bank bank2 = Bank.getInstance();
+
+        System.out.println(bank1 == bank2); //true
+
+    }
+}
+
+class Bank {
+
+    //1.私有化的构造器
+    private Bank() {
+
+    }
+    //2.内部创建类的对象  对象必须为静态的
+    private static final Bank instance = new Bank();
+
+    //3.提供公共静态方法，返回类的对象
+    public static Bank getInstance() {
+        return instance;
+    }
+}
+
+public class SingletonTest2 {
+    public static void main(String[] args) {
+        Window window1 = Window.getInstance();
+        Window window2 = Window.getInstance();
+        System.out.println(window1 == window2);//true
+    }
+}
+
+class Window {
+
+    public  Window() {
+
+    }
+
+    private static Window instance = null;
+
+    public static synchronized Window getInstance() { //同步监视器：Window类本身
+        // synchronized (Window.class) { //效率稍差
+        if (instance == null) {
+            instance = new Window();
+        }
+        return instance;
+    }
+}
